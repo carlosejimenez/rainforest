@@ -27,15 +27,6 @@ class Cifar10:
             root="./data", train=False, download=True, transform=transform
         )
 
-
-def log_every_n_percent(epoch, batch_idx, data_loader, percent):
-    pct_complete = 100.0 * (batch_idx + 1) / len(data_loader)
-    if pct_complete % percent == 0:
-        complete = (batch_idx + 1) * len(data_loader.batch_sampler)
-        total = len(data_loader.dataset)
-        print(f'Epoch {epoch}: {complete}/{total} ({pct_complete:.0f}%)')
-
-
 def eval_model(model, data_loader, name):
     model.eval()  # set model to evaluation mode
     test_loss = 0  # initialize test loss
@@ -62,3 +53,11 @@ def eval_model(model, data_loader, name):
         )
     )
     return test_loss, correct / len(data_loader.dataset)
+
+
+def log_every_n_percent(epoch, batch_idx, data_loader, percent):
+    pct_complete = 100.0 * (batch_idx + 1) / len(data_loader)
+    if pct_complete % percent == 0:
+        complete = (batch_idx + 1) * len(data_loader.batch_sampler)
+        total = len(data_loader.dataset)
+        print(f'Epoch {epoch}: {complete}/{total} ({pct_complete:.0f}%)')
