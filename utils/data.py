@@ -28,6 +28,14 @@ class Cifar10:
         )
 
 
+def log_every_n_percent(epoch, batch_idx, data_loader, percent):
+    pct_complete = 100.0 * (batch_idx + 1) / len(data_loader)
+    if pct_complete % percent == 0:
+        complete = (batch_idx + 1) * len(data_loader.batch_sampler)
+        total = len(data_loader.dataset)
+        print(f'Epoch {epoch}: {complete}/{total} ({pct_complete:.0f}%)')
+
+
 def eval_model(model, data_loader, name):
     model.eval()  # set model to evaluation mode
     test_loss = 0  # initialize test loss
@@ -39,7 +47,9 @@ def eval_model(model, data_loader, name):
             output = model(data)  # forward pass
             logits = output["logits"]
             test_loss += output["loss"].item()  # sum up batch loss
-            pred = logits.data.max(1, keepdim=True)[1]  # calculate predictions (indices of maximum log-probability)
+            pred = logits.data.max(1, keepdim=True)[
+                1
+            ]  # calculate predictions (indices of maximum log-probability)
             correct += (
                 pred.eq(target.data.view_as(pred)).cpu().sum()
             )  # calculate number of correct predictions
