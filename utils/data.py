@@ -26,7 +26,7 @@ class Cifar10:
         self.testset = CIFAR10(
             root="./data", train=False, download=True, transform=transform
         )
-        
+
 
 def eval_model(model, data_loader, name):
     model.eval()  # set model to evaluation mode
@@ -36,7 +36,7 @@ def eval_model(model, data_loader, name):
         for data, target in data_loader:  # iterate over data
             if torch.cuda.is_available():  # if GPU is available, move data to GPU
                 data, target = data.cuda(), target.cuda()
-            output = model(data)  # forward pass
+            output = model(data, target)  # forward pass
             logits = output["logits"]
             test_loss += output["loss"].item()  # sum up batch loss
             pred = logits.data.max(1, keepdim=True)[
