@@ -56,17 +56,21 @@ def eval_model(model, data_loader, name):
     return test_loss, correct / len(data_loader.dataset)
 
 
-def log_every_n_percent(epoch, batch_idx, data_loader, percent):
+def log_every_n_percent(epoch, batch_idx, data_loader, percent, payload=None):
+    if payload is None:
+        payload = {}
     log_ids = set(int(i * len(data_loader) / 100) for i in range(0, 101, percent))
     if batch_idx in log_ids:
         complete = (batch_idx + 1)
         total = len(data_loader)
         pct_complete = 100.0 * (batch_idx + 1) / len(data_loader)
-        print(f'Epoch {epoch}: {complete}/{total} ({pct_complete:.0f}%)')
+        print(f'Epoch {epoch}: {complete}/{total} ({pct_complete:.0f}%), {payload}')
 
 
-def log_every_n_steps(epoch, batch_idx, data_loader, steps):
+def log_every_n_steps(epoch, batch_idx, data_loader, steps, payload=None):
+    if payload is None:
+        payload = {}
     if (batch_idx + 1) % steps == 0:
         complete = (batch_idx + 1)
         total = len(data_loader)
-        print(f'Epoch {epoch}: {complete}/{total} ({steps} steps)')
+        print(f'Epoch {epoch}: {complete}/{total} ({steps} steps), {payload}')
