@@ -1,6 +1,7 @@
 import torch
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
+from itertools import product
 
 
 class Cifar10:
@@ -26,6 +27,12 @@ class Cifar10:
         self.testset = CIFAR10(
             root="./data", train=False, download=True, transform=transform
         )
+
+
+def loop_dictionary_lists(d):
+    keys, values = zip(*d.items())
+    for v in product(*values):
+        yield dict(zip(keys, v))
 
 
 def eval_model(model, data_loader, name):
