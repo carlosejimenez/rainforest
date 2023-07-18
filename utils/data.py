@@ -26,6 +26,7 @@ class Cifar10:
         self.testset = CIFAR10(
             root="./data", train=False, download=True, transform=transform
         )
+        
 
 def eval_model(model, data_loader, name):
     model.eval()  # set model to evaluation mode

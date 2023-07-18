@@ -15,7 +15,7 @@ class Model(nn.Module):
         # define loss function
         self.criterion = criterion
 
-    def forward(self, x):
+    def forward(self, x, target=None):
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = x.view(-1, 16 * 5 * 5)
@@ -23,6 +23,9 @@ class Model(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
 
-        loss = self.criterion(x)  # calculate loss using the specified loss function
+        if target is not None:
+            loss = self.criterion(x, target) if target is not None else None
+        else:
+            loss = None
 
         return {"loss": loss, "logits": x}
